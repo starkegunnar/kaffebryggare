@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #encoding: utf-8
+import os
 import sys
 import random
 import bluetooth
@@ -9,6 +10,8 @@ cups = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 nohandle = [",", "!"]
 nohash = [".", "!", " "]
 
+os.path.expanduser('~user')
+
 def getHandle(stringArray, defaultArray, oneIn):
 	if random.randint(1, oneIn) == oneIn:
 		return " " + random.choice(stringArray) + random.choice(defaultArray)
@@ -16,7 +19,7 @@ def getHandle(stringArray, defaultArray, oneIn):
 		return random.choice(defaultArray)
 
 #Read Config file
-file = open('/home/pi/twitter/kaffe-conf.txt','r')
+file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
 conf = file.read().splitlines()
 file.close()
 
