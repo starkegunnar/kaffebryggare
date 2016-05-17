@@ -1,6 +1,6 @@
 #Kaffe
 #RaspberryPi
-#Coffe
+#Coffee
 #Zoegas
 #Moccamaster
 #InternetOfThings

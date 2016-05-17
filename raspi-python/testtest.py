@@ -7,7 +7,7 @@ import bluetooth
 from twython import Twython
 
 cups = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-nohandle = [",", "!"]
+nohandle = [".", "!"]
 nohash = [".", "!", " "]
 
 os.path.expanduser('~user')
