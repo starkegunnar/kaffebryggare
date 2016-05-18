@@ -6,9 +6,9 @@ import random
 import bluetooth
 from twython import Twython
 
-cups = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+cups = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 nohandle = [".", "!"]
-nohash = [".", "!", " "]
+nohash = [".", "!"]
 
 os.path.expanduser('~user')
 
@@ -57,7 +57,8 @@ file = open('kaffe-handles.txt', 'r')
 handles = file.read().splitlines()
 file.close()
 
-tweetStr = "TEST: " + random.choice(greets) + getHandle(handles, nohandle, 10) + " " + random.choice(verbs) + " " + random.choice(names) + getHandle(hashtags, nohash, 3)
+coffeeStart = "TEST: " + random.choice(greets) + getHandle(handles, nohandle, 10) + " " + random.choice(verbs) + " " + random.choice(names) + getHandle(hashtags, nohash, 3)
+coffeeDone = "TEST: " + random.choice(verbs2) + " " + random.choice(cups) + " " + random.choice(conts) + " " + random.choice(names) + getHandle(hashtags, nohash, 3)
 
 #try:
 #    sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
@@ -77,12 +78,13 @@ tweetStr = "TEST: " + random.choice(greets) + getHandle(handles, nohandle, 10) +
 #        	rec = buf[:eol]
 #        	print buf
 #        	if rec == 'tweet':
-#        		api.update_status(status=tweetStr)
-#			print "Tweeted: " + tweetStr
+#        		api.update_status(status=coffeeStart)
+#			print "Tweeted: " + coffeeStart
 #        	buf = buf[eol+1:]
 #    except KeyboardInterrupt:
 #        print("Exiting")
 #        break;
 #sock.close()
-api.update_status(status=tweetStr)
-print "Tweeted: " + tweetStr
+#api.update_status(status=coffeeDone)
+print "Tweeted: " + coffeeStart
+print "Tweeted: " + coffeeDone
