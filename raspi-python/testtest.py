@@ -5,16 +5,30 @@ import sys
 import random
 import bluetooth
 import time
+import threading
 from datetime import datetime
 from twython import Twython
 
+# For testing
 cups = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 nohandle = [".", "!"]
-
+# To generalize the Twitter API location.
 os.path.expanduser('~user')
-
+# Filenames with words and phrases for message generation.
 startFiles = ['kaffe-greetings.txt', 'kaffe-verbs.txt', 'kaffe-names.txt']
 doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
+# Date-time initialization.
+
+class timestamp(object):
+	def __init__(self):
+		self.lock = threading.Lock()
+		self.value = datetime.now()
+	def refresh(self):
+		self.lock.acquire()
+		try:
+			self.value = datetime.now()
+		finally:
+			self.lock.release()
 
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
@@ -42,6 +56,36 @@ def composeMessage(messageType):
 	else:	
 		return "Ooops"
 
+def messagePoll(t):
+	try:
+		while 1:
+			raw_input()
+			t.refresh()
+			print "Timestamp refreshed on keypress"
+			print t.value
+	except KeyboardInterrupt:
+		print "Exiting messagePoll"
+		return
+
+def timePoll(t):
+	try:
+		while 1:
+			if datetime.now().minute > t.value.minute:
+				t.refresh()
+				print "timestamp refreshed on timer"
+				print t.value
+			time.sleep(1)
+	except KeyboardInterrupt:
+		print "Exiting timePoll"
+		return
+
+ts = timestamp()
+print ts.value
+print ts.value.minute
+t1 = threading.Thread(target=messagePoll, args=(ts,))
+t2 = threading.Thread(target=timePoll, args=(ts,))
+t1.start()
+t2.start()
 
 #Read Config file
 file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
@@ -58,29 +102,6 @@ api_secret = conf[2]
 access_token = conf[3]
 access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
-
-#Twitter strings
-# file = open('kaffe-greetings.txt','r')
-# greets = file.read().splitlines()
-# file.close()
-# file = open('kaffe-verbs.txt','r')
-# verbs = file.read().splitlines()
-# file.close()
-# file = open('kaffe-names.txt','r')
-# names = file.read().splitlines()
-# file.close()
-# file = open('kaffe-containers.txt', 'r')
-# conts = file.read().splitlines()
-# file.close()
-# file = open('kaffe-verbs2.txt', 'r')
-# verbs2 = file.read().splitlines()
-# file.close()
-# file = open('kaffe-hashtags.txt', 'r')
-# hashtags = file.read().splitlines()
-# file.close()
-# file = open('kaffe-handles.txt', 'r')
-# handles = file.read().splitlines()
-# file.close()
 
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
