@@ -77,7 +77,7 @@ def messagePoll(t):
 					ticks = int(received.split(" ")[1])
 					print str(ticks)
 					if ticks > 20:
-						tweet = composeMessage('start', 0)
+						tweet = composeMessage('done', ticks)
 						api.update_status(status=tweet)
 						t.refresh()
 						print "Tweeted: " + tweet
