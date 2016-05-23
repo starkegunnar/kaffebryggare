@@ -67,20 +67,20 @@ def messagePoll(t):
 			eol = strBuffer.find('\n')
 			if eol != -1:
 				received = strBuffer[:eol]
-				#print received
+				print received
 				if received == 'active':
 					tweet = composeMessage('start', 0)
 					api.update_status(status=tweet)
 					t.refresh()
-					#print "Tweeted: " + tweet
+					print "Tweeted: " + tweet
 				else if "done" in received:
 					ticks = int(received.split(" ")[1])
-					#print str(ticks)
+					print str(ticks)
 					if ticks > 20:
 						 tweet = composeMessage('start', 0)
 						api.update_status(status=tweet)
 						t.refresh()
-						#print "Tweeted: " + tweet
+						print "Tweeted: " + tweet
 				strBuffer = strBuffer[eol+1:]
 		except KeyboardInterrupt:
 			print("Exiting")
