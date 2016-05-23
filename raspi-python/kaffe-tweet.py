@@ -85,6 +85,7 @@ def messagePoll(t):
 		except KeyboardInterrupt:
 			print("Exiting")
 			sock.close()
+			t1.exit()
 			break;
 
 def timePoll(t):
@@ -97,7 +98,8 @@ def timePoll(t):
 			time.sleep(1)
 	except KeyboardInterrupt:
 		print "Exiting timePoll"
-		return
+		t1.exit()
+		break
 
 #Read Config file
 file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
