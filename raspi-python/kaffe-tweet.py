@@ -61,7 +61,7 @@ def composeMessage(messageType, ticks):
 def messagePoll(t):
 	strBuffer = ""
 	tweet = ""
-	while(1)
+	while(1):
 		try:
 			strBuffer += sock.recv(512)
 			eol = strBuffer.find('\n')
