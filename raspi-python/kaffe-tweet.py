@@ -73,7 +73,7 @@ def messagePoll(t):
 					api.update_status(status=tweet)
 					t.refresh()
 					print "Tweeted: " + tweet
-				else if "done" in received:
+				elif "done" in received:
 					ticks = int(received.split(" ")[1])
 					print str(ticks)
 					if ticks > 20:
