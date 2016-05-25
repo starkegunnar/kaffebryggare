@@ -3,7 +3,8 @@
 import os
 import sys
 import random
-import bluetooth
+#import bluetooth
+from bluetooth import *
 import time
 import threading
 from datetime import datetime
