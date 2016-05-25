@@ -51,10 +51,6 @@ void loop() {
       {
         active = true;
         ticks = 0;
-        softSerial.print("active\n");
-#ifdef DEBUG
-        Serial.print("active\n");
-#endif
         tries = 100;
         delay(1000);
       }
@@ -73,6 +69,14 @@ void loop() {
           Serial.print("tick\n");
 #endif          
           tries = 100;
+          // Send 'active' at tick 1 to reduce false positives
+          if(ticks == 1)
+          {
+            softSerial.print("active\n"); 
+#ifdef DEBUG
+            Serial.print("active\n");
+#endif
+          }
           delay(1000);
         }
         else
