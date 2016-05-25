@@ -3,8 +3,7 @@
 import os
 import sys
 import random
-#import bluetooth
-from bluetooth import *
+import bluetooth
 import time
 import threading
 from datetime import datetime
@@ -82,7 +81,7 @@ while(conn):
 	   sock.connect((bluetoothAddr, port))
 	   print("Connected")
 	   conn = 0
-	except BluetoothError as bt:
+	except bluetooth.BluetoothError as bt:
 	   print('Cannot connect to host' + str(bt) + '\n')
 	   time.sleep(5)
 	   print "Retrying...\n"
