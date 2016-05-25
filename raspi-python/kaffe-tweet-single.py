@@ -19,16 +19,6 @@ startFiles = ['kaffe-greetings.txt', 'kaffe-verbs.txt', 'kaffe-names.txt']
 doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
 # Date-time initialization.
 
-class timestamp(object):
-	def __init__(self):
-		self.lock = threading.Lock()
-		self.value = datetime.now()
-	def refresh(self):
-		self.lock.acquire()
-		try:
-			self.value = datetime.now()
-		finally:
-			self.lock.release()
 def getCups(ticks):
 	return int(round((ticks - 6.3) / 27.55))
 
@@ -105,7 +95,6 @@ while(1):
 				if received == 'active':
 					tweet = composeMessage('start', 0)
 					api.update_status(status=tweet)
-					t.refresh()
 					print "Tweeted: " + tweet
 				elif "done" in received:
 					ticks = int(received.split(" ")[1])
