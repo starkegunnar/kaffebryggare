@@ -79,7 +79,7 @@ strBuffer = ""
 tweet = ""
 while(1):
 	print("Attempting to connect to bluetooth sensor.")
-	while(!conn):
+	while not conn:
 		try:
 		   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 		   	sock.connect((bluetoothAddr, port))
@@ -95,7 +95,7 @@ while(1):
 			sock.close()
 			exit(0)
 
-	while(conn):
+	while conn:
 		try:
 			strBuffer += sock.recv(512)
 			eol = strBuffer.find('\n')
