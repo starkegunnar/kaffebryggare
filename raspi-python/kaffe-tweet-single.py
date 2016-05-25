@@ -58,49 +58,6 @@ def composeMessage(messageType, ticks):
 	else:	
 		return "Ooops"
 
-def messagePoll(t):
-	strBuffer = ""
-	tweet = ""
-	while(1):
-		try:
-			strBuffer += sock.recv(512)
-			eol = strBuffer.find('\n')
-			if eol != -1:
-				received = strBuffer[:eol]
-				print received
-				if received == 'active':
-					tweet = composeMessage('start', 0)
-					api.update_status(status=tweet)
-					t.refresh()
-					print "Tweeted: " + tweet
-				elif "done" in received:
-					ticks = int(received.split(" ")[1])
-					print str(ticks)
-					if ticks > 20:
-						tweet = composeMessage('done', ticks)
-						api.update_status(status=tweet)
-						t.refresh()
-						print "Tweeted: " + tweet
-				strBuffer = strBuffer[eol+1:]
-		except KeyboardInterrupt:
-			print("Exiting")
-			sock.close()
-			t1.exit()
-			break;
-
-def timePoll(t):
-	try:
-		while 1:
-			if datetime.now().minute > t.value.minute:
-				t.refresh()
-				print "timestamp refreshed on timer"
-				print t.value
-			time.sleep(1)
-	except KeyboardInterrupt:
-		print "Exiting timePoll"
-		t1.exit()
-		break
-
 #Read Config file
 file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
 conf = file.read().splitlines()
@@ -109,6 +66,7 @@ file.close()
 #Bluetooth constants
 bluetoothAddr = conf[0]
 port = 1
+conn = 1
 
 #Twitter constants
 api_key = conf[1]
@@ -117,18 +75,43 @@ access_token = conf[3]
 access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 
-try:
-   sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
-   sock.connect((bluetoothAddr, port))
-   print("Connected")
-   conn = 1
-except BluetoothError as bt:
-   print('cannot connect to host' + str(bt))
-   exit(0)
+while(conn):
+	try:
+	   sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
+	   sock.connect((bluetoothAddr, port))
+	   print("Connected")
+	   conn = 0
+	except BluetoothError as bt:
+	   print('Cannot connect to host' + str(bt) + '\n')
+	   time.sleep(5)
+	   print "Retrying...\n"
+	   continue
 
-ts = timestamp()
-t1 = threading.Thread(target=messagePoll, args=(ts,))
-t2 = threading.Thread(target=timePoll, args=(ts,))
-t1.start()
-t2.start()
+strBuffer = ""
+tweet = ""
+while(1):
+	try:
+		strBuffer += sock.recv(512)
+		eol = strBuffer.find('\n')
+		if eol != -1:
+			received = strBuffer[:eol]
+			print received
+			if received == 'active':
+				tweet = composeMessage('start', 0)
+				api.update_status(status=tweet)
+				t.refresh()
+				print "Tweeted: " + tweet
+			elif "done" in received:
+				ticks = int(received.split(" ")[1])
+				print str(ticks)
+				if ticks > 20:
+					tweet = composeMessage('done', ticks)
+					api.update_status(status=tweet)
+					t.refresh()
+					print "Tweeted: " + tweet
+			strBuffer = strBuffer[eol+1:]
+	except KeyboardInterrupt:
+		print("Exiting")
+		sock.close()
+		exit(0)
 
