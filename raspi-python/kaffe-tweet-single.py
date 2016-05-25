@@ -66,7 +66,7 @@ file.close()
 #Bluetooth constants
 bluetoothAddr = conf[0]
 port = 1
-conn = False
+connected = False
 
 #Twitter constants
 api_key = conf[1]
@@ -79,12 +79,12 @@ strBuffer = ""
 tweet = ""
 while(1):
 	print("Attempting to connect to bluetooth sensor.")
-	while not conn:
+	while not connected:
 		try:
 		   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 		   	sock.connect((bluetoothAddr, port))
 		   	print("Connected")
-		   	conn = True
+		   	connected = True
 		except bluetooth.BluetoothError as bt:
 		   	print("Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
 		   	time.sleep(10)
@@ -95,7 +95,7 @@ while(1):
 			sock.close()
 			exit(0)
 
-	while conn:
+	while connected:
 		try:
 			strBuffer += sock.recv(512)
 			eol = strBuffer.find('\n')
@@ -118,7 +118,7 @@ while(1):
 				strBuffer = strBuffer[eol+1:]
 		except bluetooth.BluetoothError as bt:
 			print "Connection lost." + str(bt)
-			conn = False
+			connected = False
 			sock.close()
 		except KeyboardInterrupt:
 			print("Exiting")
