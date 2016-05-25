@@ -75,48 +75,53 @@ access_token = conf[3]
 access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 
-print("Attempting to connect to bluetooth sensor.")
-while(conn):
-	try:
-	   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
-	   	sock.connect((bluetoothAddr, port))
-	   	print("Connected")
-	   	conn = 0
-	except bluetooth.BluetoothError as bt:
-	   	print("Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
-	   	time.sleep(10)
-	   	print "Retrying..."
-	   	continue
-	except KeyboardInterrupt:
-		print("Exiting")
-		sock.close()
-		exit(0)
-
 strBuffer = ""
 tweet = ""
 while(1):
-	try:
-		strBuffer += sock.recv(512)
-		eol = strBuffer.find('\n')
-		if eol != -1:
-			received = strBuffer[:eol]
-			print received
-			if received == 'active':
-				tweet = composeMessage('start', 0)
-				api.update_status(status=tweet)
-				t.refresh()
-				print "Tweeted: " + tweet
-			elif "done" in received:
-				ticks = int(received.split(" ")[1])
-				print str(ticks)
-				if ticks > 20:
-					tweet = composeMessage('done', ticks)
+	print("Attempting to connect to bluetooth sensor.")
+	while(conn):
+		try:
+		   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
+		   	sock.connect((bluetoothAddr, port))
+		   	print("Connected")
+		   	conn = 0
+		except bluetooth.BluetoothError as bt:
+		   	print("Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
+		   	time.sleep(10)
+		   	print "Retrying..."
+		   	continue
+		except KeyboardInterrupt:
+			print("Exiting")
+			sock.close()
+			exit(0)
+
+	while(!conn):
+		try:
+			strBuffer += sock.recv(512)
+			eol = strBuffer.find('\n')
+			if eol != -1:
+				received = strBuffer[:eol]
+				print received
+				if received == 'active':
+					tweet = composeMessage('start', 0)
 					api.update_status(status=tweet)
 					t.refresh()
 					print "Tweeted: " + tweet
-			strBuffer = strBuffer[eol+1:]
-	except KeyboardInterrupt:
-		print("Exiting")
-		sock.close()
-		exit(0)
+				elif "done" in received:
+					ticks = int(received.split(" ")[1])
+					print str(ticks)
+					if ticks > 20:
+						tweet = composeMessage('done', ticks)
+						api.update_status(status=tweet)
+						t.refresh()
+						print "Tweeted: " + tweet
+				strBuffer = strBuffer[eol+1:]
+		except bluetooth.BluetoothError as bt:
+			print "Connection lost." + str(bt)
+			conn = 1
+			sock.close()
+		except KeyboardInterrupt:
+			print("Exiting")
+			sock.close()
+			exit(0)
 
