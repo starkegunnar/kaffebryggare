@@ -75,17 +75,22 @@ access_token = conf[3]
 access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 
+print("Attempting to connect to bluetooth sensor.")
 while(conn):
 	try:
-	   sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
-	   sock.connect((bluetoothAddr, port))
-	   print("Connected")
-	   conn = 0
+	   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
+	   	sock.connect((bluetoothAddr, port))
+	   	print("Connected")
+	   	conn = 0
 	except bluetooth.BluetoothError as bt:
-	   print('Cannot connect to host' + str(bt) + '\n')
-	   time.sleep(5)
-	   print "Retrying...\n"
-	   continue
+	   	print("Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
+	   	time.sleep(10)
+	   	print "Retrying..."
+	   	continue
+	except KeyboardInterrupt:
+		print("Exiting")
+		sock.close()
+		exit(0)
 
 strBuffer = ""
 tweet = ""
