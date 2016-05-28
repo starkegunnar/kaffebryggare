@@ -102,7 +102,6 @@ while(1):
 					if ticks > 20:
 						tweet = composeMessage('done', ticks)
 						api.update_status(status=tweet)
-						t.refresh()
 						print "Tweeted: " + tweet
 				strBuffer = strBuffer[eol+1:]
 		except bluetooth.BluetoothError as bt:
