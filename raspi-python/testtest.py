@@ -10,7 +10,8 @@ from datetime import datetime
 from twython import Twython
 
 # For testing
-cups = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+ticks = random.randint(20, 300)
+cups = str(int(round((ticks + 4.5) / 30.25)))
 nohandle = [".", "!"]
 # To generalize the Twitter API location.
 os.path.expanduser('~user')
@@ -41,13 +42,13 @@ def composeMessage(messageType):
 	if messageType == 'start':
 		return getPhrase(startFiles[0]) + getHandle(10) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(3)
 	elif messageType == 'done':
-		return getPhrase(doneFiles[0]) + " " + random.choice(cups) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
+		return getPhrase(doneFiles[0]) + " " + cups + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
 	else:	
 		return "Ooops"
-
+print ticks
+print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
-print int(round(1.4))
 #try:
 #    sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 #    sock.connect((bluetoothAddr, port))

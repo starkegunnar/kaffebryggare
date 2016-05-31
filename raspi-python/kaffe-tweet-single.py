@@ -10,7 +10,7 @@ from datetime import datetime
 from twython import Twython
 
 # For testing
-# ticks = 30.25 * cups + 4.5, cups = (ticks - 4.5) / 30.25
+# ticks = 30.25 * cups - 4.5, cups = (ticks + 4.5) / 30.25
 nohandle = [".", "!"]
 # To generalize the Twitter API location.
 os.path.expanduser('~user')
@@ -20,7 +20,7 @@ doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
 # Date-time initialization.
 
 def getCups(ticks):
-	return int(round((ticks - 4.5) / 30.25))
+	return int(round((ticks + 4.5) / 30.25))
 
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
