@@ -47,7 +47,7 @@ def composeMessage(messageType):
 
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
-
+print int(round(1.4))
 #try:
 #    sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 #    sock.connect((bluetoothAddr, port))
