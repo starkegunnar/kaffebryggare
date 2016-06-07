@@ -20,9 +20,37 @@ startFiles = ['kaffe-greetings.txt', 'kaffe-verbs.txt', 'kaffe-names.txt']
 doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
 # Date-time initialization.
 
+#Read Config file
+file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
+conf = file.read().splitlines()
+file.close()
+#Get handles
+file = open('kaffe-handles.txt','r')
+handles = file.read().splitlines()
+file.close()
+
+#Bluetooth constants
+bluetoothAddr = conf[0]
+port = 1
+connected = False
+
+#Twitter constants
+api_key = conf[1]
+api_secret = conf[2]
+access_token = conf[3]
+access_token_secret = conf[4]
+api = Twython(api_key, api_secret, access_token, access_token_secret)
+username = conf[5]
+
+#Add followers to tweet handles
+followers = api.get_followers_ids(screen_name=username)
+for i in followers['ids']:
+	follower = api.show_user(user_id=i)
+	handles.append('@' + follower["screen_name"])
+
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
-		return " " + getPhrase('kaffe-handles.txt') + random.choice(nohandle)
+		return " " + random.choice(handles) + random.choice(nohandle)
 	else:
 		return random.choice(nohandle)
 
@@ -40,7 +68,7 @@ def getPhrase(filename):
 
 def composeMessage(messageType):
 	if messageType == 'start':
-		return getPhrase(startFiles[0]) + getHandle(10) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(3)
+		return getPhrase(startFiles[0]) + getHandle(5) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(3)
 	elif messageType == 'done':
 		return getPhrase(doneFiles[0]) + " " + cups + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
 	else:	
@@ -50,27 +78,10 @@ print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
 
-#Read Config file
-file = open(os.path.expanduser('~') + '/twitter-conf2.txt','r')
-conf = file.read().splitlines()
-file.close()
-
-#Bluetooth constants
-bluetoothAddr = conf[0]
-port = 1
-connected = False
-
-#Twitter constants
-api_key = conf[1]
-api_secret = conf[2]
-access_token = conf[3]
-access_token_secret = conf[4]
-api = Twython(api_key, api_secret, access_token, access_token_secret)
-
-followers = api.get_followers_ids(screen_name='ssigbgkaffe')
-for i in followers['ids']:
-	data = api.show_user(user_id=i)
-	print(data["screen_name"])
+#followers = api.get_followers_ids(screen_name='ssigbgkaffe')
+#for i in followers['ids']:
+#	data = api.show_user(user_id=i)
+#	print(data["screen_name"])
 
 #try:
 #    sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
