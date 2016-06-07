@@ -48,7 +48,7 @@ try:
 		follower = api.show_user(user_id=i)
 		handles.append('@' + follower["screen_name"])
 except TwythonError as e:
-	print e
+	print str(e)
 
 def getCups(ticks):
 	return int(round((ticks + 4.5) / 30.25))
