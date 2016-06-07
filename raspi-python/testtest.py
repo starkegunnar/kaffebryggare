@@ -49,6 +49,29 @@ print ticks
 print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
+
+#Read Config file
+file = open(os.path.expanduser('~') + '/twitter-conf2.txt','r')
+conf = file.read().splitlines()
+file.close()
+
+#Bluetooth constants
+bluetoothAddr = conf[0]
+port = 1
+connected = False
+
+#Twitter constants
+api_key = conf[1]
+api_secret = conf[2]
+access_token = conf[3]
+access_token_secret = conf[4]
+api = Twython(api_key, api_secret, access_token, access_token_secret)
+
+followers = api.get_followers_ids(screen_name='ssigbgkaffe')
+for i in followers['ids']:
+	data = api.show_user(user_id=i)
+	print(data["screen_name"])
+
 #try:
 #    sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 #    sock.connect((bluetoothAddr, port))
