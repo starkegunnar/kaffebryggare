@@ -7,7 +7,7 @@ import bluetooth
 import time
 import threading
 from datetime import datetime
-from twython import Twython
+from twython import Twython, TwythonError
 
 # For testing
 # ticks = 30.25 * cups - 4.5, cups = (ticks + 4.5) / 30.25
@@ -27,7 +27,6 @@ file.close()
 file = open('kaffe-handles.txt','r')
 handles = file.read().splitlines()
 file.close()
-
 #Bluetooth constants
 bluetoothAddr = conf[0]
 port = 1
@@ -41,7 +40,11 @@ access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 username = conf[5]
 
+if len(conf) > 6:
+	handles.append(conf[6])
+	
 #Add followers to tweet handles
+<<<<<<< HEAD
 #try:
 #	followers = api.get_followers_ids(screen_name=username)
 #	for i in followers['ids']:
@@ -50,6 +53,16 @@ username = conf[5]
 #except Twython.TwythonError as e:
 #	print str(e)
 #	pass
+=======
+try:
+	followers = api.get_followers_ids(screen_name=username)
+	for i in followers['ids']:
+		follower = api.show_user(user_id=i)
+		handles.append('@' + follower["screen_name"])
+except TwythonError as e:
+	print str(e)
+	pass
+>>>>>>> c10076fb9a4a9cf5cddea6c3019a07b1d4803ae3
 
 def getCups(ticks):
 	return int(round((ticks + 4.5) / 30.25))
@@ -74,7 +87,7 @@ def getPhrase(filename):
 
 def composeMessage(messageType, ticks):
 	if messageType == 'start':
-		return getPhrase(startFiles[0]) + getHandle(4) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(2)
+		return getPhrase(startFiles[0]) + getHandle(2) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(2)
 	elif messageType == 'done':
 		return getPhrase(doneFiles[0]) + " " + str(getCups(ticks)) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(2)
 	else:	
@@ -109,14 +122,22 @@ while(1):
 				print received
 				if received == 'active':
 					tweet = composeMessage('start', 0)
-					api.update_status(status=tweet)
+					try:
+						api.update_status(status=tweet)
+					except TwythonError as e:
+						print str(e)
+						pass
 					print "Tweeted: " + tweet
 				elif "done" in received:
 					ticks = int(received.split(" ")[1])
 					print str(ticks)
 					if ticks > 20:
 						tweet = composeMessage('done', ticks)
-						api.update_status(status=tweet)
+						try:
+							api.update_status(status=tweet)
+						except TwythonError as e:
+							print str(e)
+							pass
 						print "Tweeted: " + tweet
 				strBuffer = strBuffer[eol+1:]
 		except bluetooth.BluetoothError as bt:
