@@ -44,16 +44,6 @@ if len(conf) > 6:
 	handles.append(conf[6])
 	
 #Add followers to tweet handles
-<<<<<<< HEAD
-#try:
-#	followers = api.get_followers_ids(screen_name=username)
-#	for i in followers['ids']:
-#		follower = api.show_user(user_id=i)
-#		handles.append('@' + follower["screen_name"])
-#except Twython.TwythonError as e:
-#	print str(e)
-#	pass
-=======
 try:
 	followers = api.get_followers_ids(screen_name=username)
 	for i in followers['ids']:
@@ -62,7 +52,6 @@ try:
 except TwythonError as e:
 	print str(e)
 	pass
->>>>>>> c10076fb9a4a9cf5cddea6c3019a07b1d4803ae3
 
 def getCups(ticks):
 	return int(round((ticks + 4.5) / 30.25))
