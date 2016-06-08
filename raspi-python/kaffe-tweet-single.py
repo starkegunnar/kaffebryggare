@@ -27,7 +27,6 @@ file.close()
 file = open('kaffe-handles.txt','r')
 handles = file.read().splitlines()
 file.close()
-
 #Bluetooth constants
 bluetoothAddr = conf[0]
 port = 1
@@ -41,6 +40,9 @@ access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 username = conf[5]
 
+if len(conf) > 6:
+	handles.append(conf[6])
+	
 #Add followers to tweet handles
 try:
 	followers = api.get_followers_ids(screen_name=username)
@@ -74,7 +76,7 @@ def getPhrase(filename):
 
 def composeMessage(messageType, ticks):
 	if messageType == 'start':
-		return getPhrase(startFiles[0]) + getHandle(4) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(2)
+		return getPhrase(startFiles[0]) + getHandle(2) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(2)
 	elif messageType == 'done':
 		return getPhrase(doneFiles[0]) + " " + str(getCups(ticks)) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(2)
 	else:	
