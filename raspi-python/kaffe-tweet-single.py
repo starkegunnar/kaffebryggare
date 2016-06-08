@@ -7,7 +7,7 @@ import bluetooth
 import time
 import threading
 from datetime import datetime
-from twython import Twython
+from twython import Twython, TwythonError
 
 # For testing
 # ticks = 30.25 * cups - 4.5, cups = (ticks + 4.5) / 30.25
@@ -49,6 +49,7 @@ try:
 		handles.append('@' + follower["screen_name"])
 except TwythonError as e:
 	print str(e)
+	pass
 
 def getCups(ticks):
 	return int(round((ticks + 4.5) / 30.25))
@@ -108,14 +109,22 @@ while(1):
 				print received
 				if received == 'active':
 					tweet = composeMessage('start', 0)
-					api.update_status(status=tweet)
+					try:
+						api.update_status(status=tweet)
+					except TwythonError as e:
+						print str(e)
+						pass
 					print "Tweeted: " + tweet
 				elif "done" in received:
 					ticks = int(received.split(" ")[1])
 					print str(ticks)
 					if ticks > 20:
 						tweet = composeMessage('done', ticks)
-						api.update_status(status=tweet)
+						try:
+							api.update_status(status=tweet)
+						except TwythonError as e:
+							print str(e)
+							pass
 						print "Tweeted: " + tweet
 				strBuffer = strBuffer[eol+1:]
 		except bluetooth.BluetoothError as bt:
