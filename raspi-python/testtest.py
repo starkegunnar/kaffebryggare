@@ -11,7 +11,7 @@ from twython import Twython
 
 # For testing
 ticks = random.randint(20, 300)
-cups = str(int(round((ticks + 4.5) / 30.25)))
+cups = str(int(round((433 + 4.5) / 30.25)))
 nohandle = [".", "!"]
 # To generalize the Twitter API location.
 os.path.expanduser('~user')
@@ -43,13 +43,13 @@ api = Twython(api_key, api_secret, access_token, access_token_secret)
 username = conf[5]
 
 #Add followers to tweet handles
-try:
-	followers = api.get_followers_ids(screen_name=username)
-	for i in followers['ids']:
-		follower = api.show_user(user_id=i)
-		handles.append('@' + follower["screen_name"])
-except TwythonError as e:
-	print str(e)
+# try:
+# 	followers = api.get_followers_ids(screen_name=username)
+# 	for i in followers['ids']:
+# 		follower = api.show_user(user_id=i)
+# 		handles.append('@' + follower["screen_name"])
+# except TwythonError as e:
+# 	print str(e)
 
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
