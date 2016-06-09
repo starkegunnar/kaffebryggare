@@ -42,7 +42,7 @@ username = conf[5]
 
 if len(conf) > 6:
 	handles.append(conf[6])
-	
+
 #Add followers to tweet handles
 try:
 	followers = api.get_followers_ids(screen_name=username)
@@ -115,7 +115,7 @@ while(1):
 						api.update_status(status=tweet)
 					except TwythonError as e:
 						print str(e)
-						pass
+						continue
 					print "Tweeted: " + tweet
 				elif "done" in received:
 					ticks = int(received.split(" ")[1])
@@ -126,7 +126,7 @@ while(1):
 							api.update_status(status=tweet)
 						except TwythonError as e:
 							print str(e)
-							pass
+							continue
 						print "Tweeted: " + tweet
 				strBuffer = strBuffer[eol+1:]
 		except bluetooth.BluetoothError as bt:
