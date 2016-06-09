@@ -8,10 +8,11 @@ import time
 import threading
 from datetime import datetime
 from twython import Twython
+import matplotlib.pyplot as plt
 
 # For testing
 ticks = random.randint(20, 300)
-cups = str(int(round((433 + 4.5) / 30.25)))
+cups = str(int(round((ticks + 4.5) / 30.25)))
 nohandle = [".", "!"]
 # To generalize the Twitter API location.
 os.path.expanduser('~user')
@@ -42,6 +43,8 @@ access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 username = conf[5]
 
+if not os.path.exists(os.path.expanduser('~') + '/tweet-logs/'):
+	os.makedirs(os.path.expanduser('~') + '/tweet-logs/')
 #Add followers to tweet handles
 # try:
 # 	followers = api.get_followers_ids(screen_name=username)
@@ -80,6 +83,23 @@ print ticks
 print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
+
+# logfile = os.path.expanduser('~') + '/tweet-logs/cups-' + datetime.today().strftime("%U") + '.log'
+# file = open(logfile,'a+')
+# file.write(cups + '\n')
+# file.close()
+
+# today = datetime.today()
+# week = today.strftime("%U")
+# print week
+# file = open(logfile,'r')
+# cons = file.read().splitlines()
+# file.close()
+# plt.plot(cons)
+# plt.savefig(os.path.expanduser('~') + '/tweet-logs/fig.png')
+# photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
+# response = api.upload_media(media=photo)
+# api.update_status(status="image test!", media_ids=[response['media_id']])
 
 #followers = api.get_followers_ids(screen_name='ssigbgkaffe')
 #for i in followers['ids']:
