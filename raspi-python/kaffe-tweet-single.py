@@ -16,12 +16,12 @@ import matplotlib.pyplot as plt
 nohandle = [".", "!"]
 weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 # Paths and files
-home = os.path.expanduser('~')
-logs = home + '/tweet-logs'
-logfile = logs + '/' + 'cups.log'
+home = os.path.expanduser('~/')
+logs = home + 'tweet-logs/'
+logfile = logs + 'cups.log'
 
 if not os.path.exists(logs):
-	os.makedirs(home + logs)
+	os.makedirs(logs)
 
 if not os.path.exists(logfile):
 	fl = open(logfile, 'w')
