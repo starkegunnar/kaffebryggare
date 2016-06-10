@@ -7,20 +7,34 @@ import bluetooth
 import time
 import threading
 from datetime import datetime
-from twython import Twython, TwythonError
+from twython import Twython
+import matplotlib.pyplot as plt
 
 # For testing
 # ticks = 30.25 * cups - 4.5, cups = (ticks + 4.5) / 30.25
+# Strings
 nohandle = [".", "!"]
-# To generalize the Twitter API location.
-os.path.expanduser('~user')
+weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+# Paths and files
+home = os.path.expanduser('~')
+logs = home + '/tweet-logs'
+logfile = logs + '/' + 'cups.log'
+
+if not os.path.exists(logs):
+	os.makedirs(home + logs)
+
+if not os.path.exists(logfile):
+	fl = open(logfile, 'w')
+	fl.write("0\n0\n0\n0\n0\n0\n0")
+	fl.seek(0)
+	fl.close()
 # Filenames with words and phrases for message generation.
 startFiles = ['kaffe-greetings.txt', 'kaffe-verbs.txt', 'kaffe-names.txt']
 doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
 # Date-time initialization.
-
+day = datetime.today().weekday()
 #Read Config file
-file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
+file = open(home + '/twitter-conf.txt','r')
 conf = file.read().splitlines()
 file.close()
 #Get handles
@@ -82,6 +96,37 @@ def composeMessage(messageType, ticks):
 	else:	
 		return "Ooops"
 
+def updateLog(ticks):
+	cups = getCups(ticks)
+	fl = open(logfile, 'r+w')
+	cupdata = fl.read().splitlines()
+	cupdata[day] = str(int(cupdata[day]) + cups)
+	fl.seek(0)
+	for d in cupdata:
+		fl.write(d + '\n')
+	fl.close()
+
+# Coffee Statistics
+cupsperday = []
+if day == 0: # Monday
+	fl = open(logfile, 'r')
+	values = fl.read().splitlines()
+	fl.close()
+	for v in values:
+		cupsperday.append(int(v))
+	plt.bar(range(len(cupsperday)), cupsperday, align='center')
+	plt.xticks(range(len(weekdays)), weekdays, size='large')
+	plt.title("Coffee brewed last week")
+	plt.xlabel("Day of the week.")
+	plt.ylabel("Cups of Coffee")
+	plt.savefig(logs + 'fig.png')
+	fl = open(logfile, 'w')
+	fl.write("0\n0\n0\n0\n0\n0\n0")
+	fl.close()
+	photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
+	response = api.upload_media(media=photo)
+	api.update_status(status="image test!", media_ids=[response['media_id']])
+
 strBuffer = ""
 tweet = ""
 while(1):
@@ -117,6 +162,7 @@ while(1):
 					ticks = int(received.split(" ")[1])
 					print str(ticks)
 					if ticks > 20:
+						updateLog(ticks)
 						tweet = composeMessage('done', ticks)
 						api.update_status(status=tweet)
 						print "Tweeted: " + tweet

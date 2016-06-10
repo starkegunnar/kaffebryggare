@@ -12,17 +12,18 @@ import matplotlib.pyplot as plt
 
 # For testing
 ticks = random.randint(20, 300)
-cups = str(int(round((ticks + 4.5) / 30.25)))
+cups = int(round((ticks + 4.5) / 30.25))
 nohandle = [".", "!"]
+weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 # To generalize the Twitter API location.
-os.path.expanduser('~user')
+home = os.path.expanduser('~')
 # Filenames with words and phrases for message generation.
 startFiles = ['kaffe-greetings.txt', 'kaffe-verbs.txt', 'kaffe-names.txt']
 doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
 # Date-time initialization.
 
 #Read Config file
-file = open(os.path.expanduser('~') + '/twitter-conf.txt','r')
+file = open(home + '/twitter-conf.txt','r')
 conf = file.read().splitlines()
 file.close()
 #Get handles
@@ -43,8 +44,6 @@ access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 username = conf[5]
 
-if not os.path.exists(os.path.expanduser('~') + '/tweet-logs/'):
-	os.makedirs(os.path.expanduser('~') + '/tweet-logs/')
 #Add followers to tweet handles
 # try:
 # 	followers = api.get_followers_ids(screen_name=username)
@@ -53,6 +52,8 @@ if not os.path.exists(os.path.expanduser('~') + '/tweet-logs/'):
 # 		handles.append('@' + follower["screen_name"])
 # except TwythonError as e:
 # 	print str(e)
+def getCups(ticks):
+	return int(round((ticks + 4.5) / 30.25))
 
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
@@ -76,22 +77,73 @@ def composeMessage(messageType):
 	if messageType == 'start':
 		return getPhrase(startFiles[0]) + getHandle(5) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(3)
 	elif messageType == 'done':
-		return getPhrase(doneFiles[0]) + " " + cups + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
+		return getPhrase(doneFiles[0]) + " " + str(cups) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
 	else:	
 		return "Ooops"
+
+def updateLog(ticks):
+	cups = getCups(ticks)
+	fl = open(logfile, 'r+w')
+	cupdata = fl.read().splitlines()
+	cupdata[day] = str(int(cupdata[day]) + cups)
+	fl.seek(0)
+	for d in cupdata:
+		fl.write(d + '\n')
+	fl.close()
+
+def tweetStats():
+	print "hej"
+
+
 print ticks
 print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
 
-# logfile = os.path.expanduser('~') + '/tweet-logs/cups-' + datetime.today().strftime("%U") + '.log'
-# file = open(logfile,'a+')
-# file.write(cups + '\n')
-# file.close()
+logs = home + '/tweet-logs/'
+logfile = logs + 'cups.log'
+print logfile
+print logs
+print logfile
+if not os.path.exists(logs):
+	os.makedirs(home + logs)
+#day = datetime.today().weekday()
+day = random.randint(0, 6)
+print weekdays[day]
+cupsperday = []
+if os.path.exists(logfile):
+	if day == 0:
+		fl = open(logfile, 'r')
+		values = fl.read().splitlines()
+		fl.close()
+		for v in values:
+			cupsperday.append(int(v))
+		plt.bar(range(len(cupsperday)), cupsperday, align='center')
+		plt.xticks(range(len(weekdays)), weekdays, size='large')
+		plt.title("Coffe brewed last week")
+		plt.xlabel("Day of the week.")
+		plt.ylabel("Cups")
+		plt.savefig(logs + 'fig.png')
+		fl = open(logfile, 'w')
+		fl.write("0\n0\n0\n0\n0\n0\n0")
+		fl.close()
+		photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
+		response = api.upload_media(media=photo)
+		api.update_status(status="image test!", media_ids=[response['media_id']])
+else:
+	fl = open(logfile, 'w')
+	fl.write("0\n0\n0\n0\n0\n0\n0 ")
+	fl.seek(0)
+	fl.close()
+fl = open(logfile, 'r+w')
+cupdata = fl.read().splitlines()
+cupdata[day] = str(int(cupdata[day]) + cups)
+fl.seek(0)
+for d in cupdata:
+	fl.write(d + '\n')
+fl.close()
 
 # today = datetime.today()
-# week = today.strftime("%U")
-# print week
 # file = open(logfile,'r')
 # cons = file.read().splitlines()
 # file.close()
