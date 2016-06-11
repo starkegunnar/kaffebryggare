@@ -106,7 +106,7 @@ print logfile
 print logs
 print logfile
 if not os.path.exists(logs):
-	os.makedirs(home + logs)
+	os.makedirs(logs)
 #day = datetime.today().weekday()
 day = random.randint(0, 6)
 print weekdays[day]
@@ -127,9 +127,9 @@ if os.path.exists(logfile):
 		fl = open(logfile, 'w')
 		fl.write("0\n0\n0\n0\n0\n0\n0")
 		fl.close()
-		photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
-		response = api.upload_media(media=photo)
-		api.update_status(status="image test!", media_ids=[response['media_id']])
+		#photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
+		#response = api.upload_media(media=photo)
+		#api.update_status(status="image test!", media_ids=[response['media_id']])
 else:
 	fl = open(logfile, 'w')
 	fl.write("0\n0\n0\n0\n0\n0\n0 ")

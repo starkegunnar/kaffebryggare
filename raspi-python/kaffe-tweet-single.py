@@ -7,7 +7,7 @@ import bluetooth
 import time
 import threading
 from datetime import datetime
-from twython import Twython
+from twython import Twython, TwythonError
 import matplotlib.pyplot as plt
 
 # For testing
