@@ -107,8 +107,8 @@ print logs
 print logfile
 if not os.path.exists(logs):
 	os.makedirs(logs)
-#day = datetime.today().weekday()
-day = random.randint(0, 6)
+day = datetime.today().weekday()
+#day = random.randint(0, 6)
 print weekdays[day]
 cupsperday = []
 if os.path.exists(logfile):
