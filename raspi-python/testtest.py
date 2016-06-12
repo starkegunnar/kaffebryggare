@@ -140,7 +140,9 @@ else:
 	fl.close()
 fl = open(logfile, 'r+w')
 cupdata = fl.read().splitlines()
+print cupdata
 cupdata[day] = str(int(cupdata[day]) + cups)
+print cupdata
 fl.seek(0)
 for d in cupdata:
 	fl.write(d + '\n')
