@@ -101,7 +101,7 @@ coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
 
 logs = home + '/tweet-logs-test/'
-logfile = logs + 'cups.log'
+logfile = logs + 'testcups.log'
 print logfile
 print logs
 print logfile
@@ -109,6 +109,7 @@ if not os.path.exists(logs):
 	os.makedirs(logs)
 day = datetime.today().weekday()
 #day = random.randint(0, 6)
+print day
 print weekdays[day]
 cupsperday = []
 if os.path.exists(logfile):
