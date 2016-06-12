@@ -20,6 +20,7 @@ home = os.path.expanduser('~')
 # Filenames with words and phrases for message generation.
 startFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-verbs.txt', 'phrases-eng/kaffe-names.txt']
 doneFiles = ['phrases-eng/kaffe-verbs2.txt', 'phrases-eng/kaffe-containers.txt', 'phrases-eng/kaffe-names.txt']
+statFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-containers.txt', 'phrases-eng/kaffe-names.txt']
 # Date-time initialization.
 
 #Read Config file
@@ -73,11 +74,13 @@ def getPhrase(filename):
 	file.close()
 	return phrase
 
-def composeMessage(messageType):
+def composeMessage(messageType, ticks):
 	if messageType == 'start':
 		return getPhrase(startFiles[0]) + getHandle(5) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(3)
 	elif messageType == 'done':
-		return getPhrase(doneFiles[0]) + " " + str(cups) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
+		return getPhrase(doneFiles[0]) + " " + str(getCups(ticks)) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(3)
+	elif messageType == 'stats':
+		return getPhrase(statFiles[0]) + getHandle(2) + " Last week I made " + str(ticks) + " " + getPhrase(statFiles[1]) + " " + getPhrase(statFiles[2]) + getHashtag(2)
 	else:	
 		return "Ooops"
 
@@ -97,8 +100,8 @@ def tweetStats():
 
 print ticks
 print str(int(round((294 + 4.5) / 30.25)))
-coffeeStart = "TEST: " + composeMessage('start')
-coffeeDone = "TEST: " + composeMessage('done')
+coffeeStart = "TEST: " + composeMessage('start', 0)
+coffeeDone = "TEST: " + composeMessage('done', ticks)
 
 logs = home + '/tweet-logs-test/'
 logfile = logs + 'testcups.log'
@@ -107,8 +110,8 @@ print logs
 print logfile
 if not os.path.exists(logs):
 	os.makedirs(logs)
-day = datetime.today().weekday()
-#day = random.randint(0, 6)
+#day = datetime.today().weekday()
+day = random.randint(0, 6)
 print day
 print weekdays[day]
 cupsperday = []
@@ -121,6 +124,7 @@ if os.path.exists(logfile):
 		for v in values:
 			if v.isdigit():
 				cupsperday.append(int(v))
+		totalcups = sum(cupsperday)
 		plt.bar(range(len(cupsperday)), cupsperday, align='center')
 		plt.xticks(range(len(weekdays)), weekdays, size='large')
 		plt.title("Coffe brewed last week")
@@ -130,6 +134,7 @@ if os.path.exists(logfile):
 		fl = open(logfile, 'w')
 		fl.write("0\n0\n0\n0\n0\n0\n0")
 		fl.close()
+		print composeMessage('stats', totalcups)
 		#photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
 		#response = api.upload_media(media=photo)
 		#api.update_status(status="image test!", media_ids=[response['media_id']])

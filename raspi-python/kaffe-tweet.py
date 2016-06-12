@@ -31,6 +31,7 @@ if not os.path.exists(logfile):
 # Filenames with words and phrases for message generation.
 startFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-verbs.txt', 'phrases-eng/kaffe-names.txt']
 doneFiles = ['phrases-eng/kaffe-verbs2.txt', 'phrases-eng/kaffe-containers.txt', 'phrases-eng/kaffe-names.txt']
+statFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-containers.txt', 'phrases-eng/kaffe-names.txt']
 # Date-time initialization.
 day = datetime.today().weekday()
 #Read Config file
@@ -93,6 +94,8 @@ def composeMessage(messageType, ticks):
 		return getPhrase(startFiles[0]) + getHandle(2) + " " + getPhrase(startFiles[1]) + " " + getPhrase(startFiles[2]) + getHashtag(2)
 	elif messageType == 'done':
 		return getPhrase(doneFiles[0]) + " " + str(getCups(ticks)) + " " + getPhrase(doneFiles[1]) + " " + getPhrase(doneFiles[2]) + getHashtag(2)
+	elif messageType == 'stats':
+		return getPhrase(statFiles[0]) + getHandle(2) + " Last week I made " + str(ticks) + " " + getPhrase(statFiles[1]) + " " + getPhrase(statFiles[2]) + getHashtag(2)
 	else:	
 		return "Ooops"
 
@@ -114,6 +117,7 @@ if day == 0: # Monday
 	fl.close()
 	for v in values:
 		cupsperday.append(int(v))
+	totalcups = sum(cupsperday)
 	plt.bar(range(len(cupsperday)), cupsperday, align='center')
 	plt.xticks(range(len(weekdays)), weekdays, size='large')
 	plt.title("Coffee brewed last week")
@@ -125,7 +129,7 @@ if day == 0: # Monday
 	fl.close()
 	photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
 	response = api.upload_media(media=photo)
-	api.update_status(status="image test!", media_ids=[response['media_id']])
+	api.update_status(status=composeMessage('stats', totalcups), media_ids=[response['media_id']])
 
 ### MAIN LOOP ###
 strBuffer = ""
