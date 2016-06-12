@@ -18,8 +18,8 @@ weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 # To generalize the Twitter API location.
 home = os.path.expanduser('~')
 # Filenames with words and phrases for message generation.
-startFiles = ['kaffe-greetings.txt', 'kaffe-verbs.txt', 'kaffe-names.txt']
-doneFiles = ['kaffe-verbs2.txt', 'kaffe-containers.txt', 'kaffe-names.txt']
+startFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-verbs.txt', 'phrases-eng/kaffe-names.txt']
+doneFiles = ['phrases-eng/kaffe-verbs2.txt', 'phrases-eng/kaffe-containers.txt', 'phrases-eng/kaffe-names.txt']
 # Date-time initialization.
 
 #Read Config file
@@ -27,7 +27,7 @@ file = open(home + '/twitter-conf.txt','r')
 conf = file.read().splitlines()
 file.close()
 #Get handles
-file = open('kaffe-handles.txt','r')
+file = open('phrases-eng/kaffe-handles.txt','r')
 handles = file.read().splitlines()
 file.close()
 
@@ -63,7 +63,7 @@ def getHandle(chance):
 
 def getHashtag(chance):
 	if random.randint(1, chance) == chance:
-		return random.choice(nohandle) + " " + getPhrase('kaffe-hashtags.txt')
+		return random.choice(nohandle) + " " + getPhrase('phrases-eng/kaffe-hashtags.txt')
 	else:
 		return random.choice(nohandle)
 
@@ -100,7 +100,7 @@ print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start')
 coffeeDone = "TEST: " + composeMessage('done')
 
-logs = home + '/tweet-logs/'
+logs = home + '/tweet-logs-test/'
 logfile = logs + 'cups.log'
 print logfile
 print logs
@@ -115,9 +115,11 @@ if os.path.exists(logfile):
 	if day == 0:
 		fl = open(logfile, 'r')
 		values = fl.read().splitlines()
+		print values
 		fl.close()
 		for v in values:
-			cupsperday.append(int(v))
+			if v.isdigit():
+				cupsperday.append(int(v))
 		plt.bar(range(len(cupsperday)), cupsperday, align='center')
 		plt.xticks(range(len(weekdays)), weekdays, size='large')
 		plt.title("Coffe brewed last week")
@@ -132,7 +134,7 @@ if os.path.exists(logfile):
 		#api.update_status(status="image test!", media_ids=[response['media_id']])
 else:
 	fl = open(logfile, 'w')
-	fl.write("0\n0\n0\n0\n0\n0\n0 ")
+	fl.write("0\n0\n0\n0\n0\n0\n0")
 	fl.seek(0)
 	fl.close()
 fl = open(logfile, 'r+w')
