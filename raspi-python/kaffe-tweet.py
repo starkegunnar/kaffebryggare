@@ -8,8 +8,10 @@ import time
 import threading
 from datetime import datetime
 from twython import Twython, TwythonError
+#import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
 # For testing
 # ticks = 30.25 * cups - 4.5, cups = (ticks + 4.5) / 30.25
 # Strings
