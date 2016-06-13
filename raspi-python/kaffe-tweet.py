@@ -81,7 +81,7 @@ def getHandle(chance):
 
 def getHashtag(chance):
 	if random.randint(1, chance) == chance:
-		return random.choice(nohandle) + " " + getPhrase('phrases-eng/skaffe-hashtags.txt')
+		return random.choice(nohandle) + " " + getPhrase('phrases-eng/kaffe-hashtags.txt')
 	else:
 		return random.choice(nohandle)
 

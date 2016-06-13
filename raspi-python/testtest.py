@@ -11,7 +11,8 @@ from twython import Twython
 import matplotlib.pyplot as plt
 
 # For testing
-ticks = random.randint(20, 300)
+#ticks = random.randint(20, 300)
+ticks = 433
 cups = int(round((ticks + 4.5) / 30.25))
 nohandle = [".", "!"]
 weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
