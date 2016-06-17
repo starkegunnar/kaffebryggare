@@ -24,7 +24,7 @@
 
 #define TOP_VAL 550
 #define BOT_VAL 470
-#define DEBUG 1
+#define DEBUG 0
 // These constants won't change.  They're used to give names
 // to the pins used:
 const uint8_t analogInPin = A0;  // Analog input pin that the potentiometer is attached to
