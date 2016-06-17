@@ -160,12 +160,13 @@ while(1):
 			eol = strBuffer.find('\n')
 			if eol != -1:
 				received = strBuffer[:eol]
-				print received
 				if received == 'active':
+					print received
 					tweet = composeMessage('start', 0)
 					api.update_status(status=tweet)
 					print "Tweeted: " + tweet
 				elif "done" in received:
+					print received
 					ticks = int(received.split(" ")[1])
 					print str(ticks)
 					if ticks > 20:
