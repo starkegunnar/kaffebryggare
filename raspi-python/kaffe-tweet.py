@@ -113,7 +113,7 @@ def updateLog(ticks):
 
 # Coffee Statistics
 cupsperday = []
-if day == 0: # Monday
+if day == 0 and datetime.now().hour < 5: # Monday
 	fl = open(logfile, 'r')
 	values = fl.read().splitlines()
 	fl.close()

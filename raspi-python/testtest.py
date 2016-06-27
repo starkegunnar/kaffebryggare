@@ -46,6 +46,7 @@ access_token_secret = conf[4]
 api = Twython(api_key, api_secret, access_token, access_token_secret)
 username = conf[5]
 
+print datetime.now().hour
 #Add followers to tweet handles
 # try:
 # 	followers = api.get_followers_ids(screen_name=username)
@@ -104,55 +105,55 @@ print str(int(round((294 + 4.5) / 30.25)))
 coffeeStart = "TEST: " + composeMessage('start', 0)
 coffeeDone = "TEST: " + composeMessage('done', ticks)
 
-logs = home + '/tweet-logs-test/'
-logfile = logs + 'testcups.log'
-print logfile
-print logs
-print logfile
-if not os.path.exists(logs):
-	os.makedirs(logs)
-#day = datetime.today().weekday()
-day = random.randint(0, 6)
-print day
-print weekdays[day]
-cupsperday = []
-if os.path.exists(logfile):
-	if day == 0:
-		fl = open(logfile, 'r')
-		values = fl.read().splitlines()
-		print values
-		fl.close()
-		for v in values:
-			if v.isdigit():
-				cupsperday.append(int(v))
-		totalcups = sum(cupsperday)
-		plt.bar(range(len(cupsperday)), cupsperday, align='center')
-		plt.xticks(range(len(weekdays)), weekdays, size='large')
-		plt.title("Coffe brewed last week")
-		plt.xlabel("Day of the week.")
-		plt.ylabel("Cups")
-		plt.savefig(logs + 'fig.png')
-		fl = open(logfile, 'w')
-		fl.write("0\n0\n0\n0\n0\n0\n0")
-		fl.close()
-		print composeMessage('stats', totalcups)
-		#photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
-		#response = api.upload_media(media=photo)
-		#api.update_status(status="image test!", media_ids=[response['media_id']])
-else:
-	fl = open(logfile, 'w')
-	fl.write("0\n0\n0\n0\n0\n0\n0")
-	fl.seek(0)
-	fl.close()
-fl = open(logfile, 'r+w')
-cupdata = fl.read().splitlines()
-print cupdata
-cupdata[day] = str(int(cupdata[day]) + cups)
-print cupdata
-fl.seek(0)
-for d in cupdata:
-	fl.write(d + '\n')
-fl.close()
+# logs = home + '/tweet-logs-test/'
+# logfile = logs + 'testcups.log'
+# print logfile
+# print logs
+# print logfile
+# if not os.path.exists(logs):
+# 	os.makedirs(logs)
+# #day = datetime.today().weekday()
+# day = random.randint(0, 6)
+# print day
+# print weekdays[day]
+# cupsperday = []
+# if os.path.exists(logfile):
+# 	if day == 0:
+# 		fl = open(logfile, 'r')
+# 		values = fl.read().splitlines()
+# 		print values
+# 		fl.close()
+# 		for v in values:
+# 			if v.isdigit():
+# 				cupsperday.append(int(v))
+# 		totalcups = sum(cupsperday)
+# 		plt.bar(range(len(cupsperday)), cupsperday, align='center')
+# 		plt.xticks(range(len(weekdays)), weekdays, size='large')
+# 		plt.title("Coffe brewed last week")
+# 		plt.xlabel("Day of the week.")
+# 		plt.ylabel("Cups")
+# 		plt.savefig(logs + 'fig.png')
+# 		fl = open(logfile, 'w')
+# 		fl.write("0\n0\n0\n0\n0\n0\n0")
+# 		fl.close()
+# 		print composeMessage('stats', totalcups)
+# 		#photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
+# 		#response = api.upload_media(media=photo)
+# 		#api.update_status(status="image test!", media_ids=[response['media_id']])
+# else:
+# 	fl = open(logfile, 'w')
+# 	fl.write("0\n0\n0\n0\n0\n0\n0")
+# 	fl.seek(0)
+# 	fl.close()
+# fl = open(logfile, 'r+w')
+# cupdata = fl.read().splitlines()
+# print cupdata
+# cupdata[day] = str(int(cupdata[day]) + cups)
+# print cupdata
+# fl.seek(0)
+# for d in cupdata:
+# 	fl.write(d + '\n')
+# fl.close()
 
 # today = datetime.today()
 # file = open(logfile,'r')
