@@ -195,6 +195,6 @@ coffeeDone = "TEST: " + composeMessage('done', ticks)
 #        print("Exiting")
 #        break;
 #sock.close()
-#api.update_status(status=coffeeDone)
+api.update_status(status=coffeeDone)
 print "Tweeted: " + coffeeStart
 print "Tweeted: " + coffeeDone
