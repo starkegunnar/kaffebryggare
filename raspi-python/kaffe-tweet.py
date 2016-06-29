@@ -163,8 +163,8 @@ while(1):
 				if received == 'active':
 					print received
 					tweet = composeMessage('start', 0)
-					api.update_status(status=tweet)
 					print "Tweeted: " + tweet
+					api.update_status(status=tweet)
 				elif "done" in received:
 					print received
 					ticks = int(received.split(" ")[1])
@@ -172,9 +172,12 @@ while(1):
 					if ticks > 20:
 						updateLog(ticks)
 						tweet = composeMessage('done', ticks)
-						api.update_status(status=tweet)
 						print "Tweeted: " + tweet
+						api.update_status(status=tweet)
 				strBuffer = strBuffer[eol+1:]
+		except TwythonError as te:
+			print "Twitter error: " + str(te)
+			continue
 		except bluetooth.BluetoothError as bt:
 			print "Connection lost." + str(bt)
 			connected = False
