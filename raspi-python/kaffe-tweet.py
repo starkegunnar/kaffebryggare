@@ -111,6 +111,18 @@ def updateLog(ticks):
 		fl.write(d + '\n')
 	fl.close()
 
+def tweetMessage(tweet):
+	retry = 10
+	while retry:
+		try:
+			api.update_status(status=tweet)
+			break
+		except IOError, e:
+			print "Unable to tweet: " + str(e) + "\n"
+			print "Retrying...\n"
+			retry -= 1
+			continue
+
 # Coffee Statistics
 cupsperday = []
 if day == 0 and datetime.now().hour < 5: # Monday
@@ -163,8 +175,8 @@ while(1):
 				if received == 'active':
 					print received
 					tweet = composeMessage('start', 0)
-					print "Tweeted: " + tweet
-					api.update_status(status=tweet)
+					print "Tweeting: " + tweet
+					tweetMessage(tweet)
 				elif "done" in received:
 					print received
 					ticks = int(received.split(" ")[1])
@@ -172,8 +184,8 @@ while(1):
 					if ticks > 20:
 						updateLog(ticks)
 						tweet = composeMessage('done', ticks)
-						print "Tweeted: " + tweet
-						api.update_status(status=tweet)
+						print "Tweeting: " + tweet
+						tweetMessage(tweet)
 				strBuffer = strBuffer[eol+1:]
 		except TwythonError as te:
 			print "Twitter error: " + str(te)
