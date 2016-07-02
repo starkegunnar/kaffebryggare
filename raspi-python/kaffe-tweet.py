@@ -115,12 +115,15 @@ def tweetMessage(tweet):
 	retry = 10
 	while retry:
 		try:
+			retry -= 1
 			api.update_status(status=tweet)
+			break
+		except TwythonError as te:
+			print "Twitter error: " + str(te)
 			break
 		except IOError, e:
 			print "Unable to tweet: " + str(e) + "\n"
 			print "Retrying...\n"
-			retry -= 1
 			continue
 
 # Coffee Statistics
@@ -187,9 +190,6 @@ while(1):
 						print "Tweeting: " + tweet
 						tweetMessage(tweet)
 				strBuffer = strBuffer[eol+1:]
-		except TwythonError as te:
-			print "Twitter error: " + str(te)
-			continue
 		except bluetooth.BluetoothError as bt:
 			print "Connection lost." + str(bt)
 			connected = False
