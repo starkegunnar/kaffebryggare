@@ -6,6 +6,7 @@ import random
 import bluetooth
 import time
 import threading
+from socket import error as socketerror
 from datetime import datetime
 from twython import Twython, TwythonError
 #import matplotlib.pyplot as plt
@@ -121,7 +122,11 @@ def tweetMessage(tweet):
 		except TwythonError as te:
 			print "<" + str(datetime.now()) + "> Twitter error: " + str(te) + "\n"
 			break
-		except IOError, e:
+		except IOError as e:
+			print "<" + str(datetime.now()) + "> Unable to tweet: " + str(e) + "\n"
+			print "Retrying...\n"
+			continue
+		except socketerror as e:
 			print "<" + str(datetime.now()) + "> Unable to tweet: " + str(e) + "\n"
 			print "Retrying...\n"
 			continue
