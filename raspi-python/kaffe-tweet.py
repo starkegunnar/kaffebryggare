@@ -119,10 +119,10 @@ def tweetMessage(tweet):
 			api.update_status(status=tweet)
 			break
 		except TwythonError as te:
-			print "Twitter error: " + str(te)
+			print "<" + str(datetime.now()) + "> Twitter error: " + str(te) + "\n"
 			break
 		except IOError, e:
-			print "Unable to tweet: " + str(e) + "\n"
+			print "<" + str(datetime.now()) + "> Unable to tweet: " + str(e) + "\n"
 			print "Retrying...\n"
 			continue
 
@@ -160,7 +160,7 @@ while(1):
 		   	print("Connected")
 		   	connected = True
 		except bluetooth.BluetoothError as bt:
-		   	print("Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
+		   	print("<" + str(datetime.now()) + "> Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
 		   	time.sleep(10)
 		   	print "Retrying..."
 		   	continue
@@ -191,7 +191,7 @@ while(1):
 						tweetMessage(tweet)
 				strBuffer = strBuffer[eol+1:]
 		except bluetooth.BluetoothError as bt:
-			print "Connection lost." + str(bt)
+			print "<" + str(datetime.now()) + "> Connection lost." + str(bt) + "\n"
 			connected = False
 			sock.close()
 		except KeyboardInterrupt:
