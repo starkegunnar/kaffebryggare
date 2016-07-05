@@ -119,14 +119,14 @@ def tweetMessage(tweet):
 			api.update_status(status=tweet)
 			break
 		except TwythonError as te:
-			print "<" + str(datetime.now()) + "> Twitter error: " + str(te) + "\n"
+			print "<" + str(datetime.now()) + "> Twitter error: \n" + str(te) + "\n"
 			break
 		except IOError as e:
-			print "<" + str(datetime.now()) + "> Unable to tweet: " + str(e) + "\n"
+			print "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
 			print "Retrying...\n"
 			continue
 		except OpenSSL.SSL.SysCallError as e:
-			print "<" + str(datetime.now()) + "> Unable to tweet: " + str(e) + "\n"
+			print "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
 			print "Retrying...\n"
 			continue
 
@@ -161,12 +161,12 @@ while(1):
 		try:
 		   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 		   	sock.connect((bluetoothAddr, port))
-		   	print("Connected")
+		   	print("Connected\n")
 		   	connected = True
 		except bluetooth.BluetoothError as bt:
-		   	print("<" + str(datetime.now()) + "> Cannot connect to host." + str(bt) + "\nRetrying in 10 seconds...")
+		   	print("<" + str(datetime.now()) + "> Cannot connect to host.\n" + str(bt) + "\nRetrying in 10 seconds...\n")
 		   	time.sleep(10)
-		   	print "Retrying..."
+		   	print "Retrying...\n"
 		   	continue
 		except KeyboardInterrupt:
 			print("Exiting")
