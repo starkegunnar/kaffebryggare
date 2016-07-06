@@ -117,19 +117,21 @@ def tweetMessage(tweet):
 	while retry:
 		try:
 			retry -= 1
+			time.sleep(1)
 			api.update_status(status=tweet)
-			break
+			return
 		except TwythonError as te:
-			print "<" + str(datetime.now()) + "> Twitter error: \n" + str(te) + "\n"
+			print >> sys.stderr, "<" + str(datetime.now()) + "> Twitter error: \n" + str(te) + "\n"
 			break
 		except IOError as e:
-			print "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
-			print "Retrying...\n"
+			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
+			print >> sys.stderr, "Retrying...\n"
 			continue
 		except OpenSSL.SSL.SysCallError as e:
-			print "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
-			print "Retrying...\n"
+			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
+			print >> sys.stderr, "Retrying...\n"
 			continue
+	print >> sys.stderr, "ERROR: Tweet failed!\n"
 
 # Coffee Statistics
 cupsperday = []
