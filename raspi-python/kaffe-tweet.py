@@ -6,6 +6,7 @@ import random
 import bluetooth
 import time
 import threading
+import OpenSSL
 from datetime import datetime
 from twython import Twython, TwythonError
 #import matplotlib.pyplot as plt
