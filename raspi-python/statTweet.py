@@ -6,4 +6,5 @@
 #from kaffeTweet import *
 import kaffeTweet
 
+kaffeTweet.addFollowers()
 kaffeTweet.tweetStats()

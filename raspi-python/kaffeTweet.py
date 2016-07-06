@@ -207,6 +207,9 @@ if __name__ == '__main__':
 							print "Tweeting: " + tweet
 							tweetMessage(tweet)
 					strBuffer = strBuffer[eol+1:]
+				if day != datetime.today().weekday():
+					addFollowers()
+					day = datetime.today().weekday()
 			except bluetooth.BluetoothError as bt:
 				print "<" + str(datetime.now()) + "> Connection lost." + str(bt) + "\n"
 				connected = False
