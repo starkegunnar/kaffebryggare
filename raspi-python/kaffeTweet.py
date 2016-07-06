@@ -68,14 +68,16 @@ def addFollowers():
 	try:
 		followers = api.get_followers_ids(screen_name=username)
 		for i in followers['ids']:
-			follower = api.show_user(user_id=i)
-			handles.append('@' + follower["screen_name"])
+			follower = '@' + api.show_user(user_id=i)["screen_name"]
+			if follower not in handles:
+				handles.append(follower)
+				print "added: " + follower
 	except TwythonError as e:
 		print str(e)
 		pass
 
 def getCups(ticks):
-	return int(round((ticks + 4.5) / 30.25))
+	return int(round(0.033114*ticks + 0.1))
 
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
@@ -165,6 +167,7 @@ def tweetStats():
 if __name__ == '__main__':
 	strBuffer = ""
 	tweet = ""
+	addFollowers()
 	while(1):
 		print("Attempting to connect to bluetooth sensor.")
 		while not connected:

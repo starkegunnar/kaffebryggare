@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 # For testing
 #ticks = random.randint(20, 300)
 ticks = 433
-cups = int(round((ticks + 4.5) / 30.25))
+#cups = int(round((ticks + 4.5) / 30.25))
+cups = int(round(0.033114*ticks + 0.1))
 nohandle = [".", "!"]
 weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 # To generalize the Twitter API location.
