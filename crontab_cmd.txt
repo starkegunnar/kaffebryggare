@@ -1,0 +1,3 @@
+#crontab
+@reboot sudo -u pi python /home/pi/kaffebryggare/raspi-python/kaffeTweet.py  >> /home/pi/logs/cronlog 2>&1
+0 3 * * * sudo -u pi python /home/pi/kaffebryggare/raspi-python/statTweet.py >> /home/pi/logs/cronlog 2>&1
