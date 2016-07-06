@@ -19,6 +19,8 @@ nohandle = [".", "!"]
 weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 # Paths and files
 home = os.path.expanduser('~/')
+scriptdir = os.path.dirname(os.path.realpath(__file__))
+os.chdir(scriptdir)
 logs = home + 'tweet-logs/'
 logfile = logs + 'cups.log'
 
