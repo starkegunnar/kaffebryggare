@@ -77,7 +77,7 @@ def addFollowers():
 		pass
 
 def getCups(ticks):
-	return int(round(0.033114*ticks + 0.1))
+	return int(round(0.1/3*ticks))
 
 def getHandle(chance):
 	if random.randint(1, chance) == chance:
@@ -124,19 +124,18 @@ def tweetMessage(tweet):
 			retry -= 1
 			time.sleep(1)
 			api.update_status(status=tweet)
+			print >> sys.stderr, "<" + str(datetime.now()) + "> Successfully tweeted:\n" + tweet
 			return
 		except TwythonError as te:
 			print >> sys.stderr, "<" + str(datetime.now()) + "> Twitter error: \n" + str(te) + "\n"
 			break
 		except IOError as e:
-			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
-			print >> sys.stderr, "Retrying...\n"
+			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\nRetrying..."
 			continue
 		except OpenSSL.SSL.SysCallError as e:
-			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\n"
-			print >> sys.stderr, "Retrying...\n"
+			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\nRetrying..."
 			continue
-	print >> sys.stderr, "ERROR: Tweet failed!\n"
+	print >> sys.stderr, "<" + str(datetime.now()) + "> ERROR: Tweet failed!\n"
 
 #Coffee Statistics
 def tweetStats():
