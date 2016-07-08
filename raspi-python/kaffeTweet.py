@@ -187,7 +187,7 @@ if __name__ == '__main__':
 			except bluetooth.BluetoothError as bt:
 			   	logPrint("Cannot connect to host.\n" + str(bt) + "\nRetrying in 10 seconds...\n")
 			   	time.sleep(10)
-			   	logPrint("Retrying...\n")
+			   	logPrint("Retrying...")
 			   	continue
 			except KeyboardInterrupt:
 				logPrint("Exiting")
@@ -217,7 +217,7 @@ if __name__ == '__main__':
 							tweetMessage(tweet,0,0)
 					strBuffer = strBuffer[eol+1:]
 			except bluetooth.BluetoothError as bt:
-				logPrint("Connection lost." + str(bt) + "\n")
+				logPrint("Connection lost." + str(bt))
 				connected = False
 				sock.close()
 			except KeyboardInterrupt:
