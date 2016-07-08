@@ -206,7 +206,7 @@ if __name__ == '__main__':
 					if received == 'active':
 						logPrint(received)
 						tweet = composeMessage('start', 0)
-						tweetMessage(tweet)
+						tweetMessage(tweet,0,0)
 					elif "done" in received:
 						logPrint(received)
 						ticks = int(received.split(" ")[1])
