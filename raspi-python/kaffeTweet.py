@@ -182,7 +182,7 @@ if __name__ == '__main__':
 			try:
 			   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 			   	sock.connect((bluetoothAddr, port))
-			   	logPrint("Connected\n")
+			   	logPrint("Connected")
 			   	connected = True
 			except bluetooth.BluetoothError as bt:
 			   	logPrint("Cannot connect to host.\n" + str(bt) + "\nRetrying in 10 seconds...\n")
