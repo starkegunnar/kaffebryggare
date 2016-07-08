@@ -71,10 +71,15 @@ def addFollowers():
 			follower = '@' + api.show_user(user_id=i)["screen_name"]
 			if follower not in handles:
 				handles.append(follower)
-				print "added: " + follower
 	except TwythonError as e:
-		print str(e)
-		pass
+		logPrint("Unable to add followers:\n" + str(e))
+		return
+	except OpenSSL.SSL.SysCallError as e:
+		logPrint("Unable to add followers:\n" + str(e))
+		return
+
+def logPrint(msg):
+	print >> sys.stderr, "<" + str(datetime.now()) + "> " + msg
 
 def getCups(ticks):
 	return int(round(0.1/3*ticks))
@@ -117,25 +122,28 @@ def updateLog(ticks):
 		fl.write(d + '\n')
 	fl.close()
 
-def tweetMessage(tweet):
+def tweetMessage(tweet, tweettype, media):
 	retry = 10
 	while retry:
 		try:
 			retry -= 1
 			time.sleep(1)
-			api.update_status(status=tweet)
-			print >> sys.stderr, "<" + str(datetime.now()) + "> Successfully tweeted:\n" + tweet
+			if tweettype == 'stats':
+				api.update_status(status=tweet, media_ids=[media['media_id']])
+			else:
+				api.update_status(status=tweet)
+			logPrint("Successfully tweeted:\n" + tweet)
 			return
 		except TwythonError as te:
-			print >> sys.stderr, "<" + str(datetime.now()) + "> Twitter error: \n" + str(te) + "\n"
+			logPrint("Twitter error: \n" + str(te) + "\n")
 			break
 		except IOError as e:
-			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\nRetrying..."
+			logPrint("Unable to tweet: \n" + str(e) + "\nRetrying...")
 			continue
 		except OpenSSL.SSL.SysCallError as e:
-			print >> sys.stderr, "<" + str(datetime.now()) + "> Unable to tweet: \n" + str(e) + "\nRetrying..."
+			logPrint("Unable to tweet: \n" + str(e) + "\nRetrying...")
 			continue
-	print >> sys.stderr, "<" + str(datetime.now()) + "> ERROR: Tweet failed!\n"
+	logPrint("ERROR: Tweet failed!\n")
 
 #Coffee Statistics
 def tweetStats():
@@ -158,9 +166,10 @@ def tweetStats():
 		fl.close()
 		photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
 		response = api.upload_media(media=photo)
-		api.update_status(status=composeMessage('stats', totalcups), media_ids=[response['media_id']])
+		tweet = composeMessage('stats', totalcups)
+		tweetMessage(tweet, 'stats', response)
 	else:
-		print "This is not the right time for stats"
+		logPrint("This is not the right time for stats")
 
 ### MAIN LOOP ###
 if __name__ == '__main__':
@@ -168,53 +177,51 @@ if __name__ == '__main__':
 	tweet = ""
 	addFollowers()
 	while(1):
-		print("Attempting to connect to bluetooth sensor.")
+		logPrint("Attempting to connect to bluetooth sensor.")
 		while not connected:
 			try:
 			   	sock = bluetooth.BluetoothSocket (bluetooth.RFCOMM)
 			   	sock.connect((bluetoothAddr, port))
-			   	print("Connected\n")
+			   	logPrint("Connected\n")
 			   	connected = True
 			except bluetooth.BluetoothError as bt:
-			   	print("<" + str(datetime.now()) + "> Cannot connect to host.\n" + str(bt) + "\nRetrying in 10 seconds...\n")
+			   	logPrint("Cannot connect to host.\n" + str(bt) + "\nRetrying in 10 seconds...\n")
 			   	time.sleep(10)
-			   	print "Retrying...\n"
+			   	logPrint("Retrying...\n")
 			   	continue
 			except KeyboardInterrupt:
-				print("Exiting")
+				logPrint("Exiting")
 				sock.close()
 				exit(0)
 
 		while connected:
+			if day != datetime.today().weekday():
+				day = datetime.today().weekday()
+				addFollowers()
 			try:
 				strBuffer += sock.recv(512)
 				eol = strBuffer.find('\n')
 				if eol != -1:
 					received = strBuffer[:eol]
 					if received == 'active':
-						print received
+						logPrint(received)
 						tweet = composeMessage('start', 0)
-						print "Tweeting: " + tweet
 						tweetMessage(tweet)
 					elif "done" in received:
-						print received
+						logPrint(received)
 						ticks = int(received.split(" ")[1])
-						print str(ticks)
+						logPrint(str(ticks))
 						if ticks > 20:
 							updateLog(ticks)
 							tweet = composeMessage('done', ticks)
-							print "Tweeting: " + tweet
-							tweetMessage(tweet)
+							tweetMessage(tweet,0,0)
 					strBuffer = strBuffer[eol+1:]
-				if day != datetime.today().weekday():
-					addFollowers()
-					day = datetime.today().weekday()
 			except bluetooth.BluetoothError as bt:
-				print "<" + str(datetime.now()) + "> Connection lost." + str(bt) + "\n"
+				logPrint("Connection lost." + str(bt) + "\n")
 				connected = False
 				sock.close()
 			except KeyboardInterrupt:
-				print("Exiting")
+				logPrint("Exiting")
 				sock.close()
 				exit(0)
 
