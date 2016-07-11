@@ -17,8 +17,8 @@ pip install twython
 
 # Install crontab job
 echo "*** Installing crontab jobs to /etc/cron.d/kaffecron ***"
-echo "@reboot pi python $SCRIPTPATH/raspi-python/kaffeTweet.py  >> $SCRIPTPATH/logs/kaffe.log 2>&1" >  /etc/cron.d/kaffecron
-echo "0 3 * * 1 pi python $SCRIPTPATH/raspi-python/statTweet.py >> $SCRIPTPATH/logs/kaffe.log 2>&1" >> /etc/cron.d/kaffecron
+echo "@reboot root python $SCRIPTPATH/raspi-python/kaffeTweet.py  >> $SCRIPTPATH/logs/kaffe.log 2>&1" >  /etc/cron.d/kaffecron
+echo "0 3 * * 1 root python $SCRIPTPATH/raspi-python/statTweet.py >> $SCRIPTPATH/logs/kaffe.log 2>&1" >> /etc/cron.d/kaffecron
 
 # Install logrotate 
 echo "*** Installing logrotate configuration to /etc/logrotate.d/kaffelog ***"

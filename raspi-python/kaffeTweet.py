@@ -39,7 +39,7 @@ statFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-containers.tx
 # Date-time initialization.
 day = datetime.today().weekday()
 #Read Config file
-file = open(home + '/twitter-conf.txt','r')
+file = open('../twitter-conf.txt','r')
 conf = file.read().splitlines()
 file.close()
 #Get handles
