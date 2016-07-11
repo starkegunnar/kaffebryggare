@@ -18,10 +18,9 @@ import matplotlib.pyplot as plt
 nohandle = [".", "!"]
 weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 # Paths and files
-home = os.path.expanduser('~/')
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(scriptdir)
-logs = home + 'tweet-logs/'
+logs = '../logs/'
 logfile = logs + 'cups.log'
 
 if not os.path.exists(logs):
@@ -210,7 +209,6 @@ if __name__ == '__main__':
 					elif "done" in received:
 						logPrint(received)
 						ticks = int(received.split(" ")[1])
-						logPrint(str(ticks))
 						if ticks > 20:
 							updateLog(ticks)
 							tweet = composeMessage('done', ticks)
