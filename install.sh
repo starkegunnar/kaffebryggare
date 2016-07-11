@@ -30,6 +30,16 @@ echo "	copytruncate" 					>> /etc/logrotate.d/kaffelog
 echo "	notifempty" 					>> /etc/logrotate.d/kaffelog
 echo "}" 								>> /etc/logrotate.d/kaffelog
 
+# Check if there is a twitter API configuration file, if not ask the user to create one.
+echo "*** Checking for twitter API configuration file (twitter.conf) ***"
+if [ ! -f twitter.conf ]; then
+	echo "Warning! No twitter configuration file detected!"
+	echo "A twitter configuration file needs to be created to run kaffeTweet."
+	echo "Check example_twitter.conf for the correct structure."
+else
+	echo "twitter.conf found, enjoy your coffee!"
+fi
+
 # Clean-up for testing.
 #rm /etc/cron.d/kaffecron
 #rm /etc/logrotate.d/kaffelog

@@ -9,7 +9,6 @@ import threading
 import OpenSSL
 from datetime import datetime
 from twython import Twython, TwythonError
-#import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -38,29 +37,37 @@ doneFiles = ['phrases-eng/kaffe-verbs2.txt', 'phrases-eng/kaffe-containers.txt',
 statFiles = ['phrases-eng/kaffe-greetings.txt', 'phrases-eng/kaffe-containers.txt', 'phrases-eng/kaffe-names.txt']
 # Date-time initialization.
 day = datetime.today().weekday()
-#Read Config file
-file = open('../twitter-conf.txt','r')
-conf = file.read().splitlines()
+# Check if config file exists
+if not os.path.exists("../twitter.conf"):
+	logPrint("Configuration file not found! Exiting.")
+	exit(1)
+# Read config file
+file = open('../twitter.conf','r')
+conf = []
+handles = []
+for line in file.read().splitlines():
+	if not line.strip().startswith("#") and line.strip() != "":
+		conf.append(line)
 file.close()
-#Get handles
-file = open('phrases-eng/kaffe-handles.txt','r')
-handles = file.read().splitlines()
-file.close()
-#Bluetooth constants
-bluetoothAddr = conf[0]
-port = 1
-connected = False
 
-#Twitter constants
-api_key = conf[1]
-api_secret = conf[2]
-access_token = conf[3]
-access_token_secret = conf[4]
+for line in conf:
+	if "BLUETOOTH_MAC" in line:
+		bluetoothAddr = line.strip().split("=")[1]
+	elif "API_KEY" in line:
+		api_key = line.strip().split("=")[1]
+	elif "API_SECRET" in line:
+		api_secret = line.strip().split("=")[1]
+	elif "ACCESS_TOKEN" in line:
+		access_token = line.strip().split("=")[1]
+	elif "ACCESS_SECRET" in line:
+		access_token_secret = line.strip().split("=")[1]
+	elif "USER_HANDLE" in line:
+		username = line.strip().split("=")[1]
+	else:
+		handles.append(line)
+
+# Initiate Twython
 api = Twython(api_key, api_secret, access_token, access_token_secret)
-username = conf[5]
-
-if len(conf) > 6:
-	handles.append(conf[6])
 
 #Add followers to tweet handles
 def addFollowers():
@@ -84,7 +91,7 @@ def getCups(ticks):
 	return int(round(0.1/3*ticks))
 
 def getHandle(chance):
-	if random.randint(1, chance) == chance:
+	if random.randint(1, chance) == chance and handles:
 		return " " + random.choice(handles) + random.choice(nohandle)
 	else:
 		return random.choice(nohandle)
@@ -172,6 +179,8 @@ def tweetStats():
 
 ### MAIN LOOP ###
 if __name__ == '__main__':
+	port = 1
+	connected = False
 	strBuffer = ""
 	tweet = ""
 	addFollowers()
