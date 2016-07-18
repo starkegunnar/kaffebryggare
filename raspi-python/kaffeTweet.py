@@ -170,7 +170,7 @@ def tweetStats():
 		fl = open(logfile, 'w')
 		fl.write("0\n0\n0\n0\n0\n0\n0")
 		fl.close()
-		photo = open(os.path.expanduser('~') + '/tweet-logs/fig.png','rb')
+		photo = open(logs + 'fig.png','rb')
 		response = api.upload_media(media=photo)
 		tweet = composeMessage('stats', totalcups)
 		tweetMessage(tweet, 'stats', response)
