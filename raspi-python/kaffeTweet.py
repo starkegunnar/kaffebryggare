@@ -154,7 +154,7 @@ def tweetMessage(tweet, tweettype, media):
 #Coffee Statistics
 def tweetStats():
 	cupsperday = []
-	if day == 0 and datetime.now().hour < 5: # Monday
+	if day == 0 and datetime.now().hour < 8: # Monday
 		fl = open(logfile, 'r')
 		values = fl.read().splitlines()
 		fl.close()
