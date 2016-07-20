@@ -32,7 +32,7 @@ while true; do
 			echo "*** Installing crontab jobs to /etc/cron.d/kaffecron";
 			echo "@reboot root python $SCRIPTPATH/raspi-python/kaffeTweet.py  >> $SCRIPTPATH/logs/kaffe.log 2>&1" >  /etc/cron.d/kaffecron;
 			echo "0 3 * * 1 root python $SCRIPTPATH/raspi-python/statTweet.py >> $SCRIPTPATH/logs/kaffe.log 2>&1" >> /etc/cron.d/kaffecron;
-			echo "*** Cronjob installed successfully."
+			echo "*** Cronjob installed successfully.";
 			break;;
         [Nn]* ) 
 			echo "*** Will not install a cronjob."; 
@@ -63,5 +63,5 @@ done
 
 echo "*** Done!"
 # Clean-up for testing.
-#rm /etc/cron.d/kaffecron
-#rm /etc/logrotate.d/kaffelog
+rm /etc/cron.d/kaffecron
+rm /etc/logrotate.d/kaffelog
