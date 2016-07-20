@@ -47,9 +47,8 @@ while true; do
         [Yy]* ) # Install logrotate 
 			echo "*** Installing logrotate configuration to /etc/logrotate.d/kaffelog";
 			echo "$SCRIPTPATH/logs/kaffe.log {" 	>  /etc/logrotate.d/kaffelog;
-			echo "	rotate 7" 						>> /etc/logrotate.d/kaffelog;
-			echo "	daily" 							>> /etc/logrotate.d/kaffelog;
-			echo "	compress" 						>> /etc/logrotate.d/kaffelog;
+			echo "	rotate 2" 						>> /etc/logrotate.d/kaffelog;
+			echo "	weekly"							>> /etc/logrotate.d/kaffelog;
 			echo "	copytruncate" 					>> /etc/logrotate.d/kaffelog;
 			echo "	notifempty" 					>> /etc/logrotate.d/kaffelog;
 			echo "}" 								>> /etc/logrotate.d/kaffelog;
