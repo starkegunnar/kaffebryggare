@@ -63,5 +63,5 @@ done
 
 echo "*** Done!"
 # Clean-up for testing.
-rm /etc/cron.d/kaffecron
-rm /etc/logrotate.d/kaffelog
+#rm /etc/cron.d/kaffecron
+#rm /etc/logrotate.d/kaffelog
