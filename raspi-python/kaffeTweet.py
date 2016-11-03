@@ -78,10 +78,10 @@ def addFollowers():
 			if follower not in handles:
 				handles.append(follower)
 	except TwythonError as e:
-		logPrint("Unable to add followers:\n" + str(e))
+		logPrint("Twy: Unable to add followers:\n" + str(e))
 		return
 	except OpenSSL.SSL.SysCallError as e:
-		logPrint("Unable to add followers:\n" + str(e))
+		logPrint("SSL: Unable to add followers:\n" + str(e))
 		return
 
 def logPrint(msg):
