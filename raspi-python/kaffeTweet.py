@@ -77,6 +77,8 @@ def addFollowers():
 			follower = '@' + api.show_user(user_id=i)["screen_name"]
 			if follower not in handles:
 				handles.append(follower)
+				logPrint("Added:" + follower + " to handles.")
+		logPrint("addfollowers() finished")
 	except TwythonError as e:
 		logPrint("Twy: Unable to add followers:\n" + str(e))
 		return
